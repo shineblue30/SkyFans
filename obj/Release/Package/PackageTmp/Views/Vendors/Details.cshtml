@@ -1,0 +1,157 @@
+﻿@model SkyFan.Models.Vendor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Vendor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
+       
+
+    </dl>
+</div>
+
+
+
+<br />
+<table class="table">
+    <tr>
+        <th>Product Name</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Amount Paid</th>
+        <th>Balance</th>
+        <th>PaymentVia</th>
+    </tr>
+    @foreach (var item in ViewBag.check)
+    {
+        
+        <tr>
+            <td>@item.VendorProduct.Name</td>
+            <td>@item.Date.ToString("d")</td>
+            <td>@item.Quantity</td>
+            <td>@item.Price</td>
+            <td>@item.Total</td>
+            <td>@item.AmountToPay</td>
+            <td>@item.Balance</td>
+            <td>@item.PaymentVia</td>
+        </tr>
+    }
+
+
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+           
+            <td class="h3">@ViewBag.bal</td>
+        </tr>
+    </tfoot>
+
+</table>
+
+
+<table id="tblVendors"></table>
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+@*<script>
+$(document).ready(function() {
+            
+             
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("GetAllVendors")',
+        dataType: 'json',
+        data: {},
+        success: function(purchase) {
+           
+            var items = '';
+            //var rows = "<tr>" +
+                 
+            //   " <th> VendorID </th> 
+            //    <th> Product </th> 
+            //    <th> Date </th> 
+            //    <th> Quantity </th> 
+            //    <th> Price </th> 
+            //    <th> Total </th> 
+            //    <th> AmountToPay </th> 
+            //    <th> Balance </th>
+            //        <th> PaymentVia </th> " 
+            //            +
+                    
+             
+            //       "</tr>";
+            // $("#tblVendors").append(rows);
+           
+            $.each(data, function(i, item) {
+                var rows = "<tr>"
+                 +
+                " <td> " + item.Name + " </td>" +
+                " <td> " + item.Product + " </td>" +
+                " <td> " + item.Date + " </td>" +
+                " <td> " + item.Quantity + " </td>" +
+                " <td> " + item.Price + " </td>" +
+
+                " <td> " + item.Total + " </td > " +
+                "  <td> " + item.Balance + " </td > " +
+                "  <td> " + item.PaymentVia + " </td > " +
+                
+
+               " </tr>";
+                $('#tblVendors').append(rows);
+            });
+        },
+        
+    });
+    return false;
+ });
+</script>*@

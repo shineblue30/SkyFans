@@ -1,0 +1,268 @@
+﻿@model SkyFan.Models.StockOut
+
+@{
+    ViewBag.Title = "Edit";
+}
+<style>
+    option:empty {
+        display: none;
+    }
+
+    .radio label .circle {
+        border: 1px solid rgba(0, 0, 0, .54);
+        height: 15px;
+        width: 15px;
+        border-radius: 100%;
+    }
+</style>
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>StockOut</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @Value = DateTime.Today.ToString("d") } })
+            @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Vendor.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.DropDownList("VendorID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Vendor.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.VendorProductID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.DropDownList("VendorProductID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.VendorProduct.Name, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.VendorProduct.Name, "Available Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.VendorProduct.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.VendorProduct.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmployeeID, "EmployeeID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.DropDownList("EmployeeID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.EmployeeID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.RemQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.RemQuantity, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.RemQuantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+
+
+        $("#VendorID").click(function () {
+
+            $.get("/StockOuts/GetVProductList", { VendorID: $("#VendorID").val() }, function (data) {
+                $("#VendorProductID").empty();
+
+                $.each(data, function (index, row) {
+                    $("#VendorProductID").append("<option value='" + row.ID + "'>" + row.Name + "<option>")
+                    //  $("#Remaining").append("<option value='" + row.ID + "'>" + row.Quantity + "<option>")
+
+
+                });
+
+
+
+            });
+
+        })
+
+
+
+        $("#VendorProductID").click(function () {
+
+            $.get("/StockOuts/GetQuantityList",
+                {
+                    VendorProductID: $("#VendorProductID").val(),
+                    VendorID: $("#VendorID").val()
+                }, function (data) {
+
+                    $("#VendorProduct_Name").val(data)
+
+
+
+
+
+
+                });
+
+        })
+
+
+
+
+
+
+
+    });
+
+
+
+
+    $(function () {
+
+        $("#Quantity,#VendorProduct_Name").keyup(function (e) {
+
+            var q = $("#VendorProduct_Name").val();
+            var p = $("#Quantity").val();
+            var result = "";
+
+            if (q !== "" && p !== "" && $.isNumeric(q) && $.isNumeric(p)) {
+                result = parseFloat(q) - parseFloat(p);
+            }
+
+
+
+            $("#RemQuantity").val(result);
+
+        });
+
+
+
+
+        $("#Quantity,#VendorProduct_Name").change(function (e) {
+
+            var q = $("#VendorProduct_Name").val();
+            var p = $("#Quantity").val();
+            var result = "";
+
+            if (q !== "" && p !== "" && $.isNumeric(q) && $.isNumeric(p)) {
+
+                result = parseFloat(p) - parseFloat(p);
+               // result = x + q;
+            }
+
+
+
+            $("#VendorProduct_Name").val(result);
+
+        });
+
+
+    });
+
+
+    //$(function () {
+
+    //    $("#Quantity").change(function (e) {
+
+    //        var q = document.getElementById("VendorProduct_Name").value;
+    //        var p = document.getElementById("Quantity").value;
+    //        var result = "";
+
+    //        if (p > q || p < 0) {
+    //            var notify = $.notify('<strong>Quantity </strong> should be smaller than available Quantity. ', {
+    //                type: 'danger',
+    //                allow_dismiss: true,
+
+    //            });
+    //            $("#Quantity").val("");
+
+    //        }
+
+
+
+
+
+    //    });
+
+    //});
+
+   
+
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        //function will be called on button click having id btnsave
+        // alert("Hello! I am an alert box!");
+        $("#btnCreate").click(function () {
+            $.ajax(
+                {
+                    type: "POST", //HTTP POST Method
+                    url: "/StockOuts/PostQuantity", // Controller/View
+                    data: { //Passing data
+                        Quantity: $("#RemQuantity").val(), //Reading text box values using Jquery
+                        VendorID: $("#VendorID").val(),
+                        VendorProductID: $("#VendorProductID").val()
+
+
+                    }
+
+
+                });
+
+        });
+    });
+
+
+
+    
+
+</script>  

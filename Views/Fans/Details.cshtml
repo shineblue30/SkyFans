@@ -1,0 +1,101 @@
+﻿@model SkyFan.Models.Fan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Fan Model Details</h2>
+
+<div class="col-md-6">
+    
+    <hr />
+    <dl class="dl-horizontal">
+
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+
+        
+
+        
+
+    </dl>
+</div>
+
+<div class="col-md-6">
+
+    <hr />
+    <dl class="dl-horizontal">
+
+
+       
+
+
+        <dd>
+            <img src="~/Attachments/@Html.DisplayFor(model => model.Picture)" alt="Fan Model Picture" height="200" width="200">
+
+        </dd>
+
+    </dl>
+</div>
+
+
+
+
+<br />
+<table class="table">
+    <tr>
+        <th>Product Name</th>
+
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+
+    </tr>
+    @foreach (var item in ViewBag.check)
+    {
+
+        <tr>
+            <td>@item.VendorProduct.Name</td>
+            <td>@item.Qty</td>
+
+            <td>@item.Price</td>
+            <td>@item.Total</td>
+
+        </tr>
+    }
+
+
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+           
+            
+            <td class="h3">@ViewBag.sum</td>
+        </tr>
+    </tfoot>
+
+</table>
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

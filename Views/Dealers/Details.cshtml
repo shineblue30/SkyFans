@@ -1,0 +1,103 @@
+﻿@model SkyFan.Models.Dealer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Dealer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
+
+    </dl>
+</div>
+
+
+
+
+<br />
+<table class="table">
+    <tr>
+        <th>Product Name</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Amount Paid</th>
+        <th>Balance</th>
+        <th>PaymentVia</th>
+    </tr>
+    @foreach (var item in ViewBag.check)
+    {
+
+        <tr>
+            <td>@item.DealerProduct.Name</td>
+            <td>@item.Date.ToString("d")</td>
+            <td>@item.Quantity</td>
+            <td>@item.Price</td>
+            <td>@item.Total</td>
+            <td>@item.AmountToPay</td>
+            <td>@item.Balance</td>
+            <td>@item.PaymentVia</td>
+        </tr>
+    }
+
+
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td class="h3">@ViewBag.bal</td>
+        </tr>
+    </tfoot>
+
+</table>
+
+
+
+
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

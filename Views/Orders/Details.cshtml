@@ -1,0 +1,96 @@
+﻿@model SkyFan.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Dealer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dealer.Name)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.OrderDetail.PaymentVia)
+            </dt>*@
+
+        @*<dd>
+                @Html.DisplayFor(model => model.OrderDetail.PaymentVia)
+            </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeliveryDate)
+        </dd>
+
+    </dl>
+</div>
+
+
+
+
+
+
+<br />
+<table class="table">
+    <tr>
+        <th>Model Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        
+        
+    </tr>
+    @foreach (var item in ViewBag.check)
+    {
+
+    <tr>
+        <td>@item.FanID</td>
+        <td>@item.Quantity</td>
+        <td>@item.Price</td>
+        <td>@item.Total</td>
+
+
+    </tr>
+    }
+
+
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+           
+           
+
+            <td class="h3">@ViewBag.Total</td>
+        </tr>
+    </tfoot>
+
+</table>
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

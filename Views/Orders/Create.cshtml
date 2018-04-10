@@ -1,0 +1,417 @@
+﻿@model SkyFan.Models.Order
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Order</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Dealer.Name, "Dealer Name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.DropDownList("DealerID", null, htmlAttributes: new { @class = "form-control" })
+            @*@Html.ValidationMessageFor(model => model.DealerID, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.OrderDetailID, "OrderDetailID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownList("OrderDetailID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OrderDetailID, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+
+
+
+
+    <div class="details">
+        <h4>Order Items</h4>
+        <table width="100%">
+            <tr>
+                <td>Modal Name</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Total</td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.OrderDetailID, "OrderDetailID", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-8">
+                            @Html.DropDownList("FanID", null, htmlAttributes: new { @class = "form-control" })
+                            @*@Html.ValidationMessageFor(model => model.OrderDetail, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.OrderDetail.Quantity, "OrderDetailID", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-5">
+                            <input type="text" id="Quantity" class="form-control" />
+                            @*@Html.TextBox(, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @*@Html.ValidationMessageFor(model => model.OrderDetail, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.OrderDetail.Quantity, "OrderDetailID", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-5">
+                            <input type="text" id="Price" class="form-control" />
+                            @*@Html.EditorFor(model => model.OrderDetail, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @*@Html.ValidationMessageFor(model => model.OrderDetail.Price, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.OrderDetail.Quantity, "OrderDetailID", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-5">
+                            <input type="text" id="Total" class="form-control" />
+                            @*@Html.EditorFor(model => model.OrderDetail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@
+                            @*@Html.ValidationMessageFor(model => model.OrderDetail.Total, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="button" id="add" value="add" />
+                </td>
+            </tr>
+        </table>
+        <div id="orderItems" class="tablecontainer">
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" id="submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+
+
+
+
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+   
+
+
+    <script>
+        
+
+        $(document).ready(function () {
+            var orderItems = [];
+            //Add button click function
+            $('#add').click(function () {
+                //Check validation of order item
+                var isValidItem = true;
+                if ($('#FanID').val() == '') {
+                    isValidItem = false;
+                    $('#FanID').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#FanID').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#Quantity').val().trim() != '' && !isNaN($('#Quantity').val().trim()))) {
+                    isValidItem = false;
+                    $('#Quantity').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#Quantity').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#Price').val().trim() != '' && !isNaN($('#Price').val().trim()))) {
+                    isValidItem = false;
+                    $('#Price').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#Price').siblings('span.error').css('visibility', 'hidden');
+                }
+                //if (!($('#OrderDetail_Total').val().trim() != '' && !isNaN($('#OrderDetail_Total').val().trim()))) {
+                //    isValidItem = false;
+                //    $('#OrderDetail_Total').siblings('span.error').css('visibility', 'visible');
+                //}
+                //else {
+                //    $('#OrderDetail_Total').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+
+
+                //Add item to list if valid
+                
+                if (isValidItem) {
+                    orderItems.push({
+
+
+
+
+
+
+                        //FanID: e.options[e.selectedIndex].text,
+                        FanID: parseInt($('#FanID').val().trim()),
+                        Quantity: parseInt($('#Quantity').val().trim()),
+                        Price: parseFloat($('#Price').val().trim()),
+                        Total: parseInt($('#Quantity').val().trim()) * parseFloat($('#Price').val().trim())
+                    });
+
+                    //Clear fields
+                    $('#FanID').val('').focus();
+                    $('#Quantity,#Price,#Total').val('');
+
+                }
+                //populate order items
+              
+                GeneratedItemsTable();
+
+            });
+
+
+            $(function () {
+
+                $("#Quantity,#Price").keyup(function (e) {
+
+                    var q = $("#Quantity").val();
+                    var p = $("#Price").val();
+                    var result = "";
+
+                    if (q !== "" && p !== "" && $.isNumeric(q) && $.isNumeric(p)) {
+                        result = parseFloat(q) * parseFloat(p);
+                    }
+
+
+
+                    $("#Total").val(result);
+
+                });
+
+            });
+
+
+           
+
+            //var y = $('#FanID :selected').text();
+           // console.log(y);
+           
+
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if (orderItems.length == 0) {
+                    $('#orderItems').html('<span style="color:red;">Please add order items</span>');
+                    isAllValid = false;
+                }
+
+                if ($('#DealerID').val().trim() == '') {
+                    $('#DealerID').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#DeliveryDate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#OrderDate').val().trim() == '') {
+                    $('#OrderDate').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#OrderDate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+
+                        OrderDate: $('#OrderDate').val().trim(),
+                        DeliveryDate: $('#DeliveryDate').val().trim(),
+                        DealerID: $('#DealerID').val().trim(),
+                        OrderDetails: orderItems
+                    }
+
+
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '/Orders/SaveOrder',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            //check is successfully save to database
+                            if (d.status == true) {
+                                //will send status from server side
+                                alert('Successfully done.');
+                                //clear form
+                                orderItems = []; 
+                                $('#Quantity').val('');
+                                $('#Price').val('');
+                                $('#Total').empty();
+                            }
+                            else {
+                                alert('Failed');
+                            }
+                            $('#submit').val('Save');
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                            $('#submit').val('Save');
+                        }
+                    });
+                }
+
+            });
+            //function for show added items in table
+           
+
+           //var x = $('#FanID').change(function () {
+           //     alert($('#FanID :selected').text())
+           // });
+
+           //console.log(x);
+
+            var y = $('#FanID :selected').text();
+            console.log(y);
+
+            //console.log(x);
+
+            function GeneratedItemsTable() {
+                if (orderItems.length > 0) {
+                    var $table = $('<table/>');
+                    $table.append('<thead><tr><th>Modal Name</th><th>Quantity</th><th>Price</th><th>Total</th><th></th></tr></thead>');
+                    var $tbody = $('<tbody/>');
+
+                   
+
+                    $.each(orderItems, function (i, val) {
+                        var $row = $('<tr/>');
+
+                        
+
+                       // var y = $("#FanID").find(x).attr("selected", "selected");
+                        //var y =  $("#FanID").find("option:selected").text();
+                        //console.log(y);
+                        $row.append($('<td/>').html(y));
+                        $row.append($('<td/>').html(val.Quantity));
+                        $row.append($('<td/>').html(val.Price));
+                        $row.append($('<td/>').html(val.Total));
+                        var $remove = $('<a href="#">Remove</a>');
+                        $remove.click(function (e) {
+                            e.preventDefault();
+                            orderItems.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        $row.append($('<td/>').html($remove));
+                        $tbody.append($row);
+                    });
+                    console.log("current", orderItems);
+                    $table.append($tbody);
+                    $('#orderItems').html($table);
+                    
+                }
+                else {
+                    $('#orderItems').html('');
+                }
+            }
+        });
+
+    </script>
+    <style>
+        /*Adding some css for looks good*/
+        span.error {
+            display: block;
+            visibility: hidden;
+            color: red;
+            font-size: 90%;
+        }
+
+
+        /*css for table*/
+        .container td {
+            vertical-align: top;
+        }
+
+        .tablecontainer table {
+            width: 100%;
+            border-collapse: collapse;
+            border-top: 1px solid #BFAEAE;
+            border-right: 1px solid #BFAEAE;
+        }
+
+        .tablecontainer th {
+            border-bottom: 2px solid #BFAEAE !important;
+        }
+
+        .tablecontainer th, .tablecontainer td {
+            text-align: left;
+            border-left: 1px solid #BFAEAE;
+            padding: 5px;
+            border-bottom: 1px solid #BFAEAE;
+        }
+
+        .ui-widget {
+            font-size: 12px !important;
+        }
+    </style>

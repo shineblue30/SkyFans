@@ -1,0 +1,306 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@*<div class="content">
+    <div class="container-fluid">*@
+<div class="row">
+
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">store</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Credit</p>
+                <h3 class="title"> @ViewBag.balance1</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 24 Hours
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Quantity </p>
+                <h3 class="title">@ViewBag.dailySale  </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">local_offer</i> Daily Sale
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">content_copy</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Debit</p>
+                <h3 class="title">
+                    @ViewBag.balance
+
+                    @*<small>GB</small>*@
+                </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-danger">warning</i>
+                    <a href="~/Purchases">Goto Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="card-content">
+                <p class="category">Quantity  </p>
+                <h3 class="title">@ViewBag.dailyPurchase </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> Daily Purchase
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-chart" data-background-color="green">
+                    @*<div class="ct-chart" id="dailySalesChart"></div>*@
+                    <canvas id="myChart" class="ct-chart" ></canvas>
+                </div>
+                <div class="card-content">
+                    <h4 class="title">Sales Balance</h4>
+                    <p class="category">by Dealers</p>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">access_time</i> updated 5 minutes ago
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-chart" data-background-color="orange">
+                    <div class="ct-chart" id="emailsSubscriptionChart"></div>
+                    <canvas id="myChart1"></canvas>
+                </div>
+                <div class="card-content">
+                    <h4 class="title">Purchase Balance</h4>
+                    <p class="category">by Vendors</p>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">access_time</i> updated 5 minutes ago
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+
+
+
+<script src="~/assets/js/Chart.min.js"></script>
+<script src="~/assets/js/jquery-3.2.1.min.js"></script>
+<script>
+    
+        var datachart = {
+            labels: [],
+            datasets: [
+                {
+                    label: "Balance",
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    //borderColor: "rgba(220,220,220,0.7)",
+                    //borderWidth: 1,
+                    data:[]
+                },
+                {
+                    label: "Dealers",
+                    backgroundColor: "rgba(215,220,67,0.3)",
+                    //borderColor: "rgba(220,220,220,0.7)",
+                    //borderWidth: 1,
+                    data: []
+
+                }
+                
+            ]
+    }
+
+    $.getJSON("/Home/GetDataDealer", function (data) {
+
+        for (var i = 0; i <= data.length - 1; i++) {
+
+            datachart.labels.push(data[i].Name);
+            datachart.datasets[0].data.push(data[i].Balance);
+        }
+
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx,
+            {
+                type: 'horizontalBar',
+                data: datachart,
+                options: {}
+            });
+
+    });
+
+    
+    
+        
+           
+</script>
+
+<script>
+
+    var datachart1 = {
+        labels: [],
+        datasets: [
+            {
+                label: "Balance",
+                backgroundColor: "rgba(255, 255, 255, 1)",
+                //borderColor: "rgba(220,220,220,0.7)",
+                //borderWidth: 1,
+                data: []
+            },
+            {
+                label: "Vendors",
+                backgroundColor: "rgba(215,220,67,0.3)",
+                //borderColor: "rgba(220,220,220,0.7)",
+                //borderWidth: 1,
+                data: []
+
+            }
+
+        ]
+    }
+
+    $.getJSON("/Home/GetDataVendor", function (data) {
+
+        for (var i = 0; i <= data.length - 1; i++) {
+
+            datachart1.labels.push(data[i].Name);
+            datachart1.datasets[0].data.push(data[i].Balance);
+        }
+
+        var ctx = document.getElementById("myChart1").getContext('2d');
+        var myChart = new Chart(ctx,
+            {
+                type: 'horizontalBar',
+                data: datachart1,
+                options: {}
+            });
+
+    });
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="green">
+                <h4 class="title">Dealer Status</h4>
+                <p class="category">Showing Balance from Dealers</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-success">
+                    <th>Dealers</th>
+
+                    <th>Balance</th>
+                    <th>Update/Details</th>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var vl in ViewBag.dealerlist)
+                        {
+                            <tr>
+                                <td>@vl.Name</td>
+
+                                <td>@vl.Balance</td>
+                                <td>
+                                    <button type="button" rel="tooltip" title="Update" class="btn btn-success btn-simple btn-xs"
+                                            onclick="location.href='@Url.Action("Details", "Dealers" , new { id=@vl.ID })'">
+                                        <i class="material-icons">update</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="orange">
+                <h4 class="title">Vendors Status</h4>
+                <p class="category">Showing Balance which needs to pay</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                    <th>Vendors</th>
+
+                    <th>Balance</th>
+                    <th>Update/Details</th>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var vl in ViewBag.vendorlist)
+                        {
+                            <tr>
+                                <td>@vl.Name</td>
+
+                                <td>@vl.Balance</td>
+                                <td>
+                                    <button type="button" rel="tooltip" title="Update" class="btn btn-warning btn-simple btn-xs"
+                                            onclick="location.href='@Url.Action("Details", "Vendors" , new { id=@vl.ID })'">
+                                        <i class="material-icons">update</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

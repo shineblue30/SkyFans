@@ -1,0 +1,136 @@
+﻿@model IEnumerable<SkyFan.Models.StockOut>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>
+    Stock Out List
+    <button type="submit" rel="tooltip" title="New Stock Out" class="btn btn-primary btn-round btn-just-icon " onclick="location.href='@Url.Action("Create", "StockOuts")'">
+        <i class="material-icons">playlist_add</i>
+        <div class="ripple-container"></div>
+    </button>
+</h2>
+<div class="row">
+
+    <div class="col-md-5 ">
+        @using (Html.BeginForm())
+        {
+
+            <div class="form-inline  label-floating">
+
+                <label class="control-label"> Names or Products</label>
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                @*<input type="submit" value="Search" class="btn btn-success" />*@
+                <button type="submit" rel="tooltip" title="Search" class="btn btn-primary btn-round btn-just-icon">
+                    <i class="material-icons">search</i>
+                    <div class="ripple-container"></div>
+                </button>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-7 ">
+        @using (Html.BeginForm())
+        {
+            <div class=" form-inline  ">
+                <div class="col-md-5 ">
+                    <label class="control-label">
+                        Start Date:
+                    </label>
+                    @Html.TextBox("d1", null, new { @class = "form-control ", @type = "date" })
+                </div>
+
+                <div class="col-md-7 ">
+                    <label class="control-label">
+                        End Date:
+                    </label>
+                    @Html.TextBox("d2", null, new { @class = "form-control ", @type = "date" })
+                    <button type="submit" rel="tooltip" title="Search" class="btn btn-primary btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vendor.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VendorProduct.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.Name)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.StockInID)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vendor.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorProduct.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.StockInID)
+                </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(function () {
+
+
+        $("#d2").change(function () {
+            var startDate = document.getElementById("d1").value;
+            var endDate = document.getElementById("d2").value;
+
+            if ((Date.parse(startDate) > Date.parse(endDate))) {
+                var notify = $.notify('<strong>Date Input Error </strong> End date should be greater than start date. ', {
+                    type: 'danger',
+                    allow_dismiss: true,
+
+                });
+
+                document.getElementById("d2").value = "";
+            }
+        });
+    })
+</script>

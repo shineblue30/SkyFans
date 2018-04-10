@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SkyFan.Models.Dealer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Dealer List
+    <button type="submit" rel="tooltip" title="New Dealer" class="btn btn-primary btn-round btn-just-icon " onclick="location.href='@Url.Action("Create", "Dealers")'">
+        <i class="material-icons">playlist_add</i>
+        <div class="ripple-container"></div>
+    </button>
+    </h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Balance)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Balance)
+        </td>
+        <td>
+
+            <button type="button" rel="tooltip" title="Edit" class="btn btn-primary btn-simple btn-xs" onclick="location.href='@Url.Action("Edit", "Dealers" , new { id=item.ID })'">
+                <i class="material-icons">edit</i>
+            </button>
+
+            <button type="button" rel="tooltip" title="Details" class="btn btn-success btn-simple btn-xs" onclick="location.href='@Url.Action("Details", "Dealers" , new { id=item.ID })'">
+                <i class="material-icons">list</i>
+            </button>
+            <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs" onclick="location.href='@Url.Action("Delete", "Dealers" , new { id=item.ID })'">
+                <i class="material-icons">close</i>
+            </button>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
+        </td>
+    </tr>
+}
+
+</table>

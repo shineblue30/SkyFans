@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SkyFan.Models.Vendor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Vendors List
+    <button type="submit" rel="tooltip" title="New Vendor" class="btn btn-primary btn-round btn-just-icon " onclick="location.href='@Url.Action("Create", "Vendors")'">
+        <i class="material-icons">playlist_add</i>
+        <div class="ripple-container"></div>
+    </button>
+    </h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Balance)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Balance)
+        </td>
+        <td>
+            <button type="button" rel="tooltip" title="Edit" class="btn btn-primary btn-simple btn-xs" onclick="location.href='@Url.Action("Edit", "Vendors" , new { id=item.ID })'">
+                <i class="material-icons">edit</i>
+            </button>
+           
+            <button type="button" rel="tooltip" title="Details" class="btn btn-success btn-simple btn-xs" onclick="location.href='@Url.Action("Details", "Vendors" , new { id=item.ID })'">
+                <i class="material-icons">list</i>
+            </button>
+            <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs" onclick="location.href='@Url.Action("Delete", "Vendors" , new { id=item.ID })'">
+                <i class="material-icons">close</i>
+            </button>
+           
+        </td>
+    </tr>
+}
+
+</table>

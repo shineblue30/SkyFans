@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SkyFan.Models.VendorProduct>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Products List
+    <button type="submit" rel="tooltip" title="New Product" class="btn btn-primary btn-round btn-just-icon " onclick="location.href='@Url.Action("Create", "VendorProducts")'">
+        <i class="material-icons">playlist_add</i>
+        <div class="ripple-container"></div>
+    </button>
+    </h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vendor.Name)
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vendor.Name)
+        </td>
+        
+        <td>
+            <button type="button" rel="tooltip" title="Edit" class="btn btn-primary btn-simple btn-xs" onclick="location.href='@Url.Action("Edit", "VendorProducts" , new { id=item.ID })'">
+                <i class="material-icons">edit</i>
+            </button>
+           
+            <button type="button" rel="tooltip" title="Details" class="btn btn-success btn-simple btn-xs" onclick="location.href='@Url.Action("Details", "VendorProducts" , new { id=item.ID })'">
+                <i class="material-icons">list</i>
+            </button>
+            <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs" onclick="location.href='@Url.Action("Delete", "VendorProducts" , new { id=item.ID })'">
+                <i class="material-icons">close</i>
+            </button>
+
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
+        </td>
+    </tr>
+}
+
+</table>
